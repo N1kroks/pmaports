@@ -1,0 +1,90 @@
+pkgname=firmware-xiaomi-miatoll
+pkgver=1.0
+pkgrel=2
+pkgdesc="Firmware for Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
+subpackages="
+	$pkgname-adreno
+	$pkgname-initramfs
+	$pkgname-adsp
+	$pkgname-cdsp
+	$pkgname-ipa
+	$pkgname-modem
+	$pkgname-wlan
+	$pkgname-venus
+	"
+url="https://github.com/N1kroks/miatoll-firmware"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="eed35c6cadf46f1c3ed3021e5ed2f5cb6994e20d"
+source="
+	30-firmware.files
+	$url/archive/$_commit/miatoll-firmware-$_commit.tar.gz
+"
+builddir="$srcdir/miatoll-firmware-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+adreno() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S adsp firmware"
+
+	install -Dm644 "$builddir"/a6* -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+initramfs() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S firmware to be included in the initramfs"
+
+	install -Dm644 "$srcdir/30-firmware.files" \
+		"$subpkgdir/usr/share/mkinitfs/files/30-firmware.files"
+}
+
+adsp() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S adsp firmware"
+
+	install -Dm644 "$builddir"/adsp* -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+cdsp() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S cdsp firmware"
+
+	install -Dm644 "$builddir"/cdsp* -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+ipa() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S ipa firmware"
+
+	install -Dm644 "$builddir"/ipa_fws.* -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+modem() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S modem firmware"
+
+    install -Dm644 "$builddir"/modem* -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+venus() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S venus firmware"
+
+	install -Dm644 "$builddir"/venus.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+wlan() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S wlan firmware"
+
+	install -Dm644 "$builddir"/wlanmdsp.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm7125/miatoll"
+}
+
+sha512sums="
+51de573995e4d1978435521d14216988a8584449ed5658268a37fe1d5c84fbbd6bdd19c2409f606ddc395565098d9b1d5912e3b1e5e2c566ec5ea5d844870c55  30-firmware.files
+31741168ad8ed54d0ecd1b16aaa9f897235e19ee08bbfe8296654c2d0ac0d04dff7ade5c69f5870c0df436a68c92badfc7ffc83bd65aa379077a57da01795095  miatoll-firmware-eed35c6cadf46f1c3ed3021e5ed2f5cb6994e20d.tar.gz
+"
