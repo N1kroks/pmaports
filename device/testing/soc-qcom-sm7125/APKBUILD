@@ -1,39 +1,45 @@
-# Maintainer: Leandro Friedrich <email@leandrofriedrich.de>
-# Co-Maintainer: map220v <map220v300@gmail.com>
+# Maintainer: Nikroks <nikroksm@mail.ru>
 pkgname=soc-qcom-sm7125
-pkgver=1.0
+pkgver=1.1
 pkgrel=1
 pkgdesc="Common package for Qualcomm SM7125 devices"
 url="https://postmarketos.org"
 license="BSD-3-Clause"
 arch="aarch64"
-options="!check !archcheck !tracedeps"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
 depends="
-	msm-modem-uim-selection
-	bootmac
+	swclock-offset
 "
-replaces="upower"
 subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 source="
-	30-gpu-firmware.files
-	UPower.conf
+	30-initramfs-firmware.files
+	soc-qcom-sm7125-nonfree-firmware.post-install
 "
 
 package() {
-	# Shutdown when battery is critical instead of sleep
-	install -Dm644 "$srcdir"/UPower.conf \
-		"$pkgdir"/etc/UPower/UPower.conf
+	# parent package is empty
+	mkdir -p "$pkgdir"
 }
 
 nonfree_firmware() {
-	pkgdesc="Modem, WiFi and GPU Firmware"
-	depends="msm-modem pd-mapper tqftpserv"
-	install -Dm644 "$srcdir/30-gpu-firmware.files" \
-		"$subpkgdir/usr/share/mkinitfs/files/30-gpu-firmware.files"
+	depends="
+		firmware-qcom-adreno-a630
+		linux-firmware-ath10k
+		linux-firmware-qca
+		linux-firmware-qcom
+		pd-mapper
+		pd-mapper-openrc
+		tqftpserv
+		tqftpserv-openrc
+		msm-modem
+		msm-modem-uim-selection"
 	install="$subpkgname.post-install"
+	mkdir "$subpkgdir"
+	install -Dm644 "$srcdir/30-initramfs-firmware.files" -t \
+		"$subpkgdir"/usr/share/mkinitfs/files
 }
 
 sha512sums="
-9d455b56558d453d501a1ad869ffa79f9952ed43485a9847d506db6a78bfcd9f9c9d855660ee1d368eb74f4429385ec166addc30d802261c75562e785fe84c52  UPower.conf
-fa300fb92e3b375cd802a6243510d2a092d75ced7f62d044485566f4b76240259426eed6be91028c80e3a7f6894492f748a1dfd7122f90dc84253deb063338de  30-gpu-firmware.files
+be741a8409a038279fc0083a39dc8f8a51e9c6ca91b46cfb10413231b786fab46fa4db5783adeceebcc955be0bb7139f4f8bf875b97e54ad08dba0a666524e8c  30-initramfs-firmware.files
+5abdf51e4c7ce188f0bd7ccd9741dbd472ec1469e2f7b5074dde97a8f4171c3bb117cf838615c0f1870f5d89708aa6541fde097e47020c8bbacde5e00f1cca97  soc-qcom-sm7125-nonfree-firmware.post-install
 "
