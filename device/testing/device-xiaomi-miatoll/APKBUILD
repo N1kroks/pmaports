@@ -2,24 +2,32 @@
 # Maintainer: David Wronek <david@mainlining.org>
 pkgname=device-xiaomi-miatoll
 pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
-pkgver=1
-pkgrel=0
+pkgver=1.2
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
 options="!check !archcheck"
 depends="
+	alsa-ucm-conf-xiaomi-miatoll
 	make-dynpart-mappings
 	mkbootimg
 	postmarketos-base
 	swclock-offset
+	soc-qcom-sm7125
 "
 makedepends="devicepkg-dev"
-source="deviceinfo"
+source="
+	deviceinfo
+	modules-initfs
+"
 
 subpackages="
-	$pkgname-kernel-curtana:kernel_curtana
-	$pkgname-kernel-joyeuse:kernel_joyeuse
+	$pkgname-kernel-curtana_tianma:kernel_curtana_tianma
+	$pkgname-kernel-curtana_huaxing:kernel_curtana_huaxing
+	$pkgname-kernel-joyeuse_tianma:kernel_joyeuse_tianma
+	$pkgname-kernel-joyeuse_huaxing:kernel_joyeuse_huaxing
+	$pkgname-nonfree-firmware:nonfree_firmware
 "
 
 build() {
@@ -30,18 +38,47 @@ package() {
 	devicepkg_package $startdir $pkgname
 }
 
-kernel_curtana() {
-	pkgdesc="Xiaomi Redmi Note 9S. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+kernel_curtana_tianma() {
+	pkgdesc="Xiaomi Redmi Note 9S with Tianma panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
 	depends="linux-postmarketos-qcom-sm7125"
 	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
 }
 
-kernel_joyeuse() {
-	pkgdesc="Xiaomi Redmi Note 9 Pro (Global). To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+kernel_curtana_huaxing() {
+	pkgdesc="Xiaomi Redmi Note 9S with Huaxing panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
 	depends="linux-postmarketos-qcom-sm7125"
 	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_joyeuse_tianma() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro (Global) with Tianma panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_joyeuse_huaxing() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro (Global) with Huaxing panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="Firmware for Modem, WiFi, Touchscreen, etc."
+	depends="
+		firmware-xiaomi-miatoll-adreno
+		firmware-xiaomi-miatoll-initramfs
+		firmware-xiaomi-miatoll-adsp
+		firmware-xiaomi-miatoll-cdsp
+		firmware-xiaomi-miatoll-ipa
+		firmware-xiaomi-miatoll-modem
+		firmware-xiaomi-miatoll-venus
+		firmware-xiaomi-miatoll-wlan
+		soc-qcom-sm7125-nonfree-firmware
+		"
+	mkdir "$subpkgdir"
 }
 
 sha512sums="
-8127f706f04c9e57902c3287ef088441fa3efd3d922805ef4957897f4b193e6c1b022b933834684b3db3d0d9739769dcb5084a556ef3cda77e80e8443401bccf  deviceinfo
+7c20301e0ad43f0ec2e3b17e72b7e07dc3bbc79caada1b6365c3ced64df6afb4ca9c47cf56d4b2a639c9ac90d90506903c01526cd45160105557f948ad9bb3e3  deviceinfo
+ee9c65f9edc624bf5e84f4586bf2f23e8f9fa9abf5173e12f1825cdaa72dc9c61fc9de7d3ffa82e0f6bf48a30915a4434b5da598349f0f52e33dff7cf552b074  modules-initfs
 "
