@@ -1,0 +1,43 @@
+# Maintainer: Nikroks <nikroksm@mail.ru>
+pkgname=alsa-ucm-conf-qcom-sm7125
+pkgver=1.0
+pkgrel=1
+pkgdesc="ALSA Use Case Manager configuration for phones and tablets based on Qualcomm's sm7125 SoC"
+subpackages="
+	alsa-ucm-conf-xiaomi-miatoll:xiaomi_miatoll
+"
+url="https://alsa-project.org"
+arch="aarch64"
+license="BSD-3-Clause"
+source="
+	alsa-ucm-conf/miatoll.conf
+	alsa-ucm-conf/miatoll_HiFi.conf
+"
+options="!check" # no tests
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+xiaomi_miatoll() {
+	pkgdesc="ALSA Use Case Manager configuration for Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
+	depends="alsa-ucm-conf"
+	replaces="alsa-ucm-conf"
+
+	mkdir -p "$subpkgdir/usr/share/alsa/ucm2/conf.d/sm8250"
+
+	install -Dm644 "$srcdir/miatoll.conf" \
+		"$subpkgdir/usr/share/alsa/ucm2/Xiaomi/miatoll/miatoll.conf"
+
+	install -Dm644 "$srcdir/miatoll_HiFi.conf" \
+		"$subpkgdir/usr/share/alsa/ucm2/Xiaomi/miatoll/HiFi.conf"
+
+	ln -s ../../Xiaomi/miatoll/miatoll.conf \
+	  "$subpkgdir/usr/share/alsa/ucm2/conf.d/sm8250/XiaomiRedmi9s.conf"
+}
+
+sha512sums="
+498c2621f213a2aba8e971ed7628882b3874e48e0fd9ef67ecbe04a19452946dc9ebb2550bca90930bc5b1b6b83dce09c829439a41177e59a808dcfd62e5e359  miatoll.conf
+9325f31f8dda377d75f9d19c6e5bb59b4c5345d68bdeb951fe5f80291471d452c38c4acab3c5c2e75e5543a326e49b37e9cee92c1ea88155b2915ddd68f385d7  miatoll_HiFi.conf
+"
