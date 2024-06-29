@@ -3,7 +3,7 @@
 pkgname=device-xiaomi-miatoll
 pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
 pkgver=1.2
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -27,6 +27,8 @@ subpackages="
 	$pkgname-kernel-curtana_huaxing:kernel_curtana_huaxing
 	$pkgname-kernel-joyeuse_tianma:kernel_joyeuse_tianma
 	$pkgname-kernel-joyeuse_huaxing:kernel_joyeuse_huaxing
+	$pkgname-kernel-gram_tianma:kernel_gram_tianma
+	$pkgname-kernel-gram_huaxing:kernel_gram_huaxing
 	$pkgname-nonfree-firmware:nonfree_firmware
 "
 
@@ -62,6 +64,18 @@ kernel_joyeuse_huaxing() {
 	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
 }
 
+kernel_gram_tianma() {
+	pkgdesc="Xiaomi POCO M2 Pro with Tianma panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_gram_huaxing() {
+	pkgdesc="Xiaomi POCO M2 Pro with Huaxing panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
 nonfree_firmware() {
 	pkgdesc="Firmware for Modem, WiFi, Touchscreen, etc."
 	depends="
@@ -79,6 +93,6 @@ nonfree_firmware() {
 }
 
 sha512sums="
-7c20301e0ad43f0ec2e3b17e72b7e07dc3bbc79caada1b6365c3ced64df6afb4ca9c47cf56d4b2a639c9ac90d90506903c01526cd45160105557f948ad9bb3e3  deviceinfo
+4bce872e57e6fdfec9a2e5611333a5043b923bd30c987d01f31549638ea2b518c810df401e28d86320d891b3382db8ffb014e7ac2a03bbe2542309e93277d6c0  deviceinfo
 ee9c65f9edc624bf5e84f4586bf2f23e8f9fa9abf5173e12f1825cdaa72dc9c61fc9de7d3ffa82e0f6bf48a30915a4434b5da598349f0f52e33dff7cf552b074  modules-initfs
 "
