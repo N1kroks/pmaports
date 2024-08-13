@@ -1,25 +1,25 @@
 # Maintainer: David Wronek <david@mainlining.org>
-
+# Co-Maintainer: Nikroks <nikroksm@mail.ru>
 _flavor="postmarketos-qcom-sm7125"
 pkgname=linux-$_flavor
-pkgver=6.9.2
+pkgver=6.10.3
 pkgrel=2
 pkgdesc="Mainline Kernel fork for SM7125 devices"
 arch="aarch64"
 _carch="arm64"
-url="https://kernel.org"
+url="https://github.com/N1kroks/linux-7125"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-nftables
 	"
-makedepends="bison findutils flex postmarketos-installkernel openssl-dev perl"
+makedepends="bison findutils flex postmarketos-installkernel python3 openssl-dev perl"
 
 source="
-	https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/linux-$pkgver.tar.xz
+	$pkgname-$pkgver.tar.gz::$url/archive/linux-$pkgver.tar.gz
 	config-$_flavor.$arch
 "
-builddir="$srcdir/linux-$pkgver"
+builddir="$srcdir/linux-7125-linux-$pkgver"
 
 prepare() {
 	default_prepare
@@ -48,6 +48,6 @@ package() {
 
 
 sha512sums="
-a168f5b3e7ee7451d5bb1c7f6c090d6002330a4529ef74b2e47f6902ba3d6feaa8dc89f7b5a072d52f6933fd08354a0ff1e12f22240ce53c758c144d4ad132cd  linux-6.9.2.tar.xz
-6b452137dd0797a5c27d64df216f9ade421ef23e5e84294b482c0a8e486221fd419a96d2f438bf2a56ca36e7c716899a915ae979be3e7dd0b8eac322f24b0181  config-postmarketos-qcom-sm7125.aarch64
+eef2e99c3a8a02c1790084ba10d5bf5b77809430f8643c03fada443700fbf79dc505aa4751fd04a43cb97017bf71899a58e6c6cb244af31b4bcbc5d9ecab9801  linux-postmarketos-qcom-sm7125-6.10.3.tar.gz
+6a0fd8589c04c992c5963e022e791b035c5dfb5e2de6edc99b754c946424c395b64787df8a04f9e31f64baddc8aee5bb5ad993ccbd3b7b5d2740f20a8436fba1  config-postmarketos-qcom-sm7125.aarch64
 "
