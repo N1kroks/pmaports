@@ -1,8 +1,9 @@
 # Reference: <https://postmarketos.org/devicepkg>
 # Maintainer: David Wronek <david@mainlining.org>
+# Co-Maintainer: Nikroks <nikroksm@mail.ru>
 pkgname=device-xiaomi-miatoll
 pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
-pkgver=2
+pkgver=2.1
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -12,14 +13,24 @@ depends="
 	make-dynpart-mappings
 	mkbootimg
 	postmarketos-base
-	swclock-offset
+	soc-qcom-sm7125
 "
 makedepends="devicepkg-dev"
-source="deviceinfo"
+source="
+	alsa-ucm-conf/miatoll.conf
+	alsa-ucm-conf/HiFi.conf
+	deviceinfo
+	modules-initfs
+"
 
 subpackages="
-	$pkgname-kernel-curtana:kernel_curtana
-	$pkgname-kernel-joyeuse:kernel_joyeuse
+	$pkgname-kernel-curtana_tianma:kernel_curtana_tianma
+	$pkgname-kernel-curtana_huaxing:kernel_curtana_huaxing
+	$pkgname-kernel-joyeuse_tianma:kernel_joyeuse_tianma
+	$pkgname-kernel-joyeuse_huaxing:kernel_joyeuse_huaxing
+	$pkgname-kernel-gram_tianma:kernel_gram_tianma
+	$pkgname-kernel-gram_huaxing:kernel_gram_huaxing
+	$pkgname-nonfree-firmware:nonfree_firmware
 "
 
 build() {
@@ -28,20 +39,75 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	# device-specific alsa ucm conf
+	install -Dm644 "$srcdir/miatoll.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/miatoll/miatoll.conf"
+
+	install -Dm644 "$srcdir/HiFi.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/miatoll/HiFi.conf"
+
+	mkdir -p "$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250"
+	ln -s ../../Xiaomi/miatoll/miatoll.conf \
+		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250/XiaomiRedmi9s.conf"
 }
 
-kernel_curtana() {
-	pkgdesc="Xiaomi Redmi Note 9S. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+kernel_curtana_tianma() {
+	pkgdesc="Xiaomi Redmi Note 9S with Tianma panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
 	depends="linux-postmarketos-qcom-sm7125"
 	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
 }
 
-kernel_joyeuse() {
-	pkgdesc="Xiaomi Redmi Note 9 Pro (Global). To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+kernel_curtana_huaxing() {
+	pkgdesc="Xiaomi Redmi Note 9S with Huaxing panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
 	depends="linux-postmarketos-qcom-sm7125"
 	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_joyeuse_tianma() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro (Global) with Tianma panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_joyeuse_huaxing() {
+	pkgdesc="Xiaomi Redmi Note 9 Pro (Global) with Huaxing panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_gram_tianma() {
+	pkgdesc="Xiaomi POCO M2 Pro with Tianma panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_gram_huaxing() {
+	pkgdesc="Xiaomi POCO M2 Pro with Huaxing panel. To know which model you have, visit https://wiki.postmarketos.org/wiki/Xiaomi-miatoll-variants"
+	depends="linux-postmarketos-qcom-sm7125"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="Firmware for Modem, WiFi, Touchscreen, etc."
+	depends="
+		firmware-xiaomi-miatoll-adsp
+		firmware-xiaomi-miatoll-cdsp
+		firmware-xiaomi-miatoll-gpu
+		firmware-xiaomi-miatoll-initramfs
+		firmware-xiaomi-miatoll-ipa
+		firmware-xiaomi-miatoll-modem
+		firmware-xiaomi-miatoll-touchscreen
+		firmware-xiaomi-miatoll-venus
+		firmware-xiaomi-miatoll-wlan
+		soc-qcom-sm7125-nonfree-firmware
+		"
+	mkdir "$subpkgdir"
 }
 
 sha512sums="
-02b8892ef150e7985a894b8d63fc83484b5e2d9516a9ec28a5275e56ef4e3b7da845867e1a8617222b0d0d99bf08cbd3cc1ebc7f525f6fb65648d425e44962aa  deviceinfo
+498c2621f213a2aba8e971ed7628882b3874e48e0fd9ef67ecbe04a19452946dc9ebb2550bca90930bc5b1b6b83dce09c829439a41177e59a808dcfd62e5e359  miatoll.conf
+9325f31f8dda377d75f9d19c6e5bb59b4c5345d68bdeb951fe5f80291471d452c38c4acab3c5c2e75e5543a326e49b37e9cee92c1ea88155b2915ddd68f385d7  HiFi.conf
+6994bb81e48fbe6071d7b0bdc2d15700e63653865f5703d83d0b41a4ca72ac8a863f9c493bc90191b41698e862c2ec954bae8e7cd7e0be9c1aac94b16e1186e9  deviceinfo
+9c1e77fd27ca8efb288099ed48f5f4cad71ae29a9c76a96d6aef471d3870a7aee3548cd0ed892407d5ce391814cf88145d22e1eba148e7008634c06700eecfbc  modules-initfs
 "
