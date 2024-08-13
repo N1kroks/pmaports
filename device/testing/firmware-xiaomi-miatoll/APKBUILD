@@ -1,0 +1,126 @@
+# Maintainer: Nikroks <nikroksm@mail.ru>
+pkgname=firmware-xiaomi-miatoll
+pkgver=1
+pkgrel=1
+pkgdesc="Firmware for Miatoll"
+subpackages="
+	$pkgname-adsp
+	$pkgname-cdsp
+	$pkgname-gpu
+	$pkgname-initramfs
+	$pkgname-ipa
+	$pkgname-modem
+	$pkgname-touchscreen
+	$pkgname-venus
+	$pkgname-wlan
+	"
+url="https://github.com/N1kroks/firmware-xiaomi-miatoll"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="271f9b233113c5d348f0d73524739e738f4739ef"
+source="
+	$pkgname-$_commit.tar.gz::$url/archive/$_commit/$pkgname-$_commit.tar.gz
+	30-initramfs-firmwares.files
+	adsp.files
+	cdsp.files
+	gpu.files
+	ipa.files
+	modem.files
+	touchscreen.files
+	venus.files
+	wlan.files
+"
+builddir="$srcdir/$pkgname-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+# Helper method for installing firmware files from a text file
+install_files() {
+	cd "$builddir"
+
+	while IFS="" read -r _i || [ -n "$_i" ]; do
+		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		echo $_i
+		install -Dm644 $_i "$subpkgdir/$_i"
+	done < "$srcdir/$1"
+}
+
+adsp() {
+	pkgdesc="Miatoll adsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "adsp.files"
+}
+
+cdsp() {
+	pkgdesc="Miatoll cdsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "cdsp.files"
+}
+
+gpu() {
+	pkgdesc="Miatoll gpu firmware"
+
+	mkdir "$subpkgdir"
+	install_files "gpu.files"
+}
+
+initramfs() {
+	pkgdesc="Miatoll firmware to be included in the initramfs"
+
+	install -Dm644 "$srcdir/30-initramfs-firmwares.files" \
+		"$subpkgdir/usr/share/mkinitfs/files/30-initramfs-firmwares.files"
+}
+
+ipa() {
+	pkgdesc="Miatoll ipa firmware"
+
+	mkdir "$subpkgdir"
+	install_files "ipa.files"
+}
+
+modem() {
+	pkgdesc="Miatoll modem firmware"
+
+	mkdir "$subpkgdir"
+	install_files "modem.files"
+}
+
+touchscreen() {
+	pkgdesc="Miatoll touchscreen firmware"
+
+	mkdir "$subpkgdir"
+	install_files "touchscreen.files"
+}
+
+venus() {
+	pkgdesc="Miatoll venus firmware"
+
+	mkdir "$subpkgdir"
+	install_files "venus.files"
+}
+
+wlan() {
+	pkgdesc="Miatoll wlan firmware"
+
+	mkdir "$subpkgdir"
+	install_files "wlan.files"
+}
+
+sha512sums="
+040ffc3b5b4261dfdd35cf8a5e637679e17441f52da09c1e5bbe1ec1508a684295cfb67b170f281de586af90972db0e185bbf8fb9d900ff2be002fb304538da6  firmware-xiaomi-miatoll-271f9b233113c5d348f0d73524739e738f4739ef.tar.gz
+97caf2ce8e878cf3aaa531894d17ddb93ccbc72796bcc82cdd51c4c27524231d13f435e622edf559968637abe20a1f1c3e99db9f05c92ef37f7be3eac48f3021  30-initramfs-firmwares.files
+a6bcfc549b464a20e3378c8f2936459a371c1acf46186652a844ca0797818b78b3b78bf1e7ff08b712357aeda0392817213104005f47a3ffa91b3e75ed12fc77  adsp.files
+a1086b072d0c154355a4d266d275cc44738c663b05a085ab213af60542deffc8ab0944b84f83542e5216c0f083bbdfa4a767e9fb60744125e88970d2932b1135  cdsp.files
+40bd305354e42ef1682fc4a2404b585706476bc0b295e9a4b965238cb2c377104fb4ccd717eb0869e226de61b6abdb907fbf8b198fbb10181e4eb5b2ddbbc70f  gpu.files
+0dada72b0aa928892a596ffa2e16fd552e3b3d5d5d2a340137aa31dc49c8bf2557271269ec307a194b12b809865d5154170bb5c88c7f8e7fe11c00f56580fbf6  ipa.files
+ce64ff359d6e096c889ebd1e869a555a0ac9961b8bd72ec9019e016bdb6573a4a651e8f8bc1406187ea4c7b1df495a63dd392a3f07763359014df0169c73677e  modem.files
+5d6c96e95f01831aee22c114f575b963b6b73e416880ad00d7f11bd7f640ef6ff93eaf32ea9e41c909c63e79bbb9ed3cd3808642ed1cdc1897db538706306691  touchscreen.files
+45a162deb016b63e8ee5619d1d1337c2fc3cd522d3ea55a6977a96d9b6100a20f32228087585b3d2ca73e5932a33b4e87696a2b828f2248c7a0282405640c65d  venus.files
+87c6d2bb6bb6b79cde8b4762ac0277e5a956df1295f1770aeaa62dd2294f3bcbc202b8e6377f7a5fd002d3ec9f1fbf5f5fc47c42778132997cdfbbf07a9a5feb  wlan.files
+"
