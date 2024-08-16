@@ -4,7 +4,7 @@
 pkgname=device-xiaomi-miatoll
 pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
 pkgver=1.1
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -106,8 +106,8 @@ nonfree_firmware() {
 }
 
 sha512sums="
-498c2621f213a2aba8e971ed7628882b3874e48e0fd9ef67ecbe04a19452946dc9ebb2550bca90930bc5b1b6b83dce09c829439a41177e59a808dcfd62e5e359  miatoll.conf
-9325f31f8dda377d75f9d19c6e5bb59b4c5345d68bdeb951fe5f80291471d452c38c4acab3c5c2e75e5543a326e49b37e9cee92c1ea88155b2915ddd68f385d7  HiFi.conf
+bc1ac760d35c4b77727ad2181bd838b253a0310bf42245befcb037c519bc7b3fcb87faf02830610afff60d03338750f224bb218637032aa25bc9c81128dcddc6  miatoll.conf
+46cbd19dcf01346ba46e692779e744bd5487dc4d2518ef6f0904aecb4739193ba348894594ef8060022ff842977031b7c186bc9f2b5237d01763102dccd54468  HiFi.conf
 3e78dd32507dda2b64a7dcf3ea1ed70eefb7288feaa0286c9dae3df73f4eab44af6df59140c9338f7938b596b2d1ed3bddd6c2fe7f52573def8cc87a57fbc00c  deviceinfo
 9c1e77fd27ca8efb288099ed48f5f4cad71ae29a9c76a96d6aef471d3870a7aee3548cd0ed892407d5ce391814cf88145d22e1eba148e7008634c06700eecfbc  modules-initfs
 "
