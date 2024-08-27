@@ -4,7 +4,7 @@
 pkgname=device-xiaomi-miatoll
 pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
 pkgver=2.1
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -97,10 +97,12 @@ nonfree_firmware() {
 		firmware-xiaomi-miatoll-initramfs
 		firmware-xiaomi-miatoll-ipa
 		firmware-xiaomi-miatoll-modem
+		firmware-xiaomi-miatoll-sensors
 		firmware-xiaomi-miatoll-touchscreen
 		firmware-xiaomi-miatoll-venus
 		firmware-xiaomi-miatoll-wlan
 		soc-qcom-sm7125-nonfree-firmware
+		soc-qcom-sm7125-libssc-180-degrees
 		"
 	mkdir "$subpkgdir"
 }
