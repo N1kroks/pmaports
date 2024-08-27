@@ -8,7 +8,7 @@ command="/usr/libexec/iio-sensor-proxy"
 # It doesnt break other devices and makes it work in devices like the OP6T and AYN Odin.
 # This is just a temporary workaround.
 start_pre() {
-	sleep 10
+	sleep 30
 }
 
 depend() {
