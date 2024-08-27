@@ -1,7 +1,7 @@
 # Maintainer: Nikroks <nikroksm@mail.ru>
 pkgname=soc-qcom-sm7125
 pkgver=1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Common package for Qualcomm SM7125 devices"
 url="https://postmarketos.org"
 license="BSD-3-Clause"
@@ -12,9 +12,11 @@ depends="
 "
 subpackages="
 	$pkgname-nonfree-firmware:nonfree_firmware
+	$pkgname-libssc-180-degrees:libssc_180_degrees
 "
 source="
 	30-initramfs-firmware.files
+	81-libssc-180-degrees.rules
 	soc-qcom-sm7125-nonfree-firmware.post-install
 "
 
@@ -25,6 +27,7 @@ package() {
 
 nonfree_firmware() {
 	depends="
+		hexagonrpcd
 		linux-firmware-ath10k
 		linux-firmware-qca
 		linux-firmware-qcom
@@ -41,7 +44,13 @@ nonfree_firmware() {
 		"$subpkgdir"/usr/share/mkinitfs/files
 }
 
+libssc_180_degrees() {
+	install -Dm644 "$srcdir"/81-libssc-180-degrees.rules -t \
+		"$subpkgdir"/usr/lib/udev/rules.d
+}
+
 sha512sums="
 be741a8409a038279fc0083a39dc8f8a51e9c6ca91b46cfb10413231b786fab46fa4db5783adeceebcc955be0bb7139f4f8bf875b97e54ad08dba0a666524e8c  30-initramfs-firmware.files
-5abdf51e4c7ce188f0bd7ccd9741dbd472ec1469e2f7b5074dde97a8f4171c3bb117cf838615c0f1870f5d89708aa6541fde097e47020c8bbacde5e00f1cca97  soc-qcom-sm7125-nonfree-firmware.post-install
+90b546ebaa171b7f5e49ba436ca6ee3e01301c7749497790977d6bfe6edca29955ffe1006d1ce71e50d64f03efb602167227063f3e0c20a7297e79a47d704fe7  81-libssc-180-degrees.rules
+8408c5e87dd7d0ced30e8190d4e82b5c654140dcacc7299829b7431b55178382d5bba8751227361cb0a3c4cd23bdddfba13fc05275e0d7d43e7b7f51625fcbf8  soc-qcom-sm7125-nonfree-firmware.post-install
 "
