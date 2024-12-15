@@ -1,7 +1,7 @@
 # Maintainer: Nikroks <nikroksm@mail.ru>
 pkgname=soc-qcom-sm7125
 pkgver=1.1
-pkgrel=0
+pkgrel=1
 pkgdesc="Common package for Qualcomm SM7125 devices"
 url="https://postmarketos.org"
 license="BSD-3-Clause"
@@ -33,7 +33,7 @@ package() {
 
 nonfree_firmware() {
 	pkgdesc="Modem, WiFi and GPU Firmware"
-	depends="msm-modem pd-mapper tqftpserv"
+	depends="msm-modem tqftpserv"
 	install -Dm644 "$srcdir/30-gpu-firmware.files" \
 		"$subpkgdir/usr/share/mkinitfs/files/30-gpu-firmware.files"
 }
@@ -43,7 +43,6 @@ nonfree_firmware_openrc() {
 	install="$subpkgname.post-install"
 	depends="
 		tqftpserv-openrc
-		pd-mapper-openrc
 	"
 
 	mkdir -p "$subpkgdir"
